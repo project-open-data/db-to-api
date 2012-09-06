@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /db-to-api/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#db + table + column + value
+RewriteRule ([^/]+)/([^/]+)/([^/]+)/([^/]+)\.([a-zA-Z]{3,4})$  index.php?db=$1&table=$2&column=$3&value=$4&format=$5 [L,QSA]
+
+#db + table + #id
+RewriteRule ([^/]+)/([^/]+)/([^/]+)\.([a-zA-Z]{3,4})$  index.php?db=$1&table=$2&value=$3&format=$4 [L,QSA]
+
+#db + table
+RewriteRule ([^/]+)/([^/]+)\.([a-zA-Z]{3,4})$  index.php?db=$1&table=$2&format=$3 [L,QSA]
+
+RewriteRule . index.php [L,QSA]
+</IfModule>
