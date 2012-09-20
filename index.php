@@ -1,4 +1,5 @@
 <?php
+
 include dirname( __FILE__ ) . '/includes/functions.php';
 include dirname( __FILE__ ) . '/includes/class.db-api.php';
 include dirname( __FILE__ ) . '/config.php';
