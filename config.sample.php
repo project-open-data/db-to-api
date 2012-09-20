@@ -1,7 +1,7 @@
 <?php
 
 /*
-Example configuration... all fields optional except dataset name
+Example configuration. All fields optional except the dataset name.
 
 $args = array( 
             'name' => null,
