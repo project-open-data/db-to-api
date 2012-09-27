@@ -81,6 +81,8 @@ register_db_api( 'dataset-name', $args );
 
 For a SQLite database, simply provide the path to the database in `name`.
 
+For an Oracle database, you can either specify a service defined in tsnames.ora (e.g. `dept_spending`) or you can define an Oracle Instant Client connection string (e.g., `//localhost:1521/dept_spending`).
+
 License
 -------
 
