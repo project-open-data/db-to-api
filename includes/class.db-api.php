@@ -462,13 +462,14 @@ class DB_API {
 	 * Retrieve data from Alternative PHP Cache (APC).
 	 */
 	function cache_get( $key ) {
-
-		if ( function_exists( 'apc_fetch' ) ) {
-			return apc_fetch( $key );
+		
+		if ( !extension_loaded('apc') || (ini_get('apc.enabled') != 1) ) {
+			if ( isset( $this->cache[ $key ] ) ) {
+				return $this->cache[ $key ];
+			}
 		}
-
-		if ( isset( $this->cache[ $key ] ) ) {
-			return $this->cache[ $key ];
+		else {
+			return apc_fetch( $key );
 		}
 
 		return false;
@@ -486,7 +487,7 @@ class DB_API {
 
 		$key = 'db_api_' . $key;
 
-		if ( function_exists( 'apc_store' ) ) {
+		if ( extension_loaded('apc') && (ini_get('apc.enabled') == 1) ) {
 			return apc_store( $key, $value, $ttl );
 		}
 
