@@ -102,13 +102,13 @@ class DB_API {
 	 */
 	function slugify( $text ) {
 
-		// replace non letter or digits by -
+		// replace non-alphanumeric characters with a hyphen
 		$text = preg_replace('~[^\\pL\d]+~u', '-', $text);
 
-		// trim
+		// trim off any trailing or leading hyphens
 		$text = trim($text, '-');
 
-		// transliterate
+		// transliterate from UTF-8 to ASCII
 		if (function_exists('iconv')) {
 			$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
 		}
@@ -119,7 +119,7 @@ class DB_API {
 		// remove unwanted characters
 		$text = preg_replace('~[^-\w]+~', '', $text);
 
-		//ensure unique
+		// ensure that this slug is unique
 		$i=1;
 		while ( array_key_exists( $text, $this->dbs ) ) {
 			$text .= "-$i";
