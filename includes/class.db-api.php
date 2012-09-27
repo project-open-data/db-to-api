@@ -59,7 +59,7 @@ class DB_API {
 	 */
 	function get_db( $db = null ) {
 
-		if ( $db == null && $this->db != null ) {
+		if ( $db == null && !is_null($this->db) ) {
 			return $this->db;
 		}
 
