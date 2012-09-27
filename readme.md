@@ -77,7 +77,7 @@ register_db_api( 'dataset-name', $args );
 
 ```
 
-*Note: All fields (other than the dataset name) are optional and will default to the above.*
+* Note: All fields (other than the dataset name) are optional and will default to the above.*
 
 License
 -------
@@ -87,7 +87,7 @@ GPLv3 or Later
 Roadmap
 -------
 
-* Automagic documenation generation
+* Automagic documentation generation
 * JSONP
 * XML and HTML output
 * Support more PDO database drivers
