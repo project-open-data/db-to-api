@@ -64,7 +64,7 @@ class DB_API {
 		}
 
 		if ( is_object( $db ) ) {
-			var_dump( debug_backtrace() );//$db = $db->name;
+			$db = $db->name;
 		}
 		
 		
@@ -331,7 +331,7 @@ class DB_API {
 	 * @return array an array of results
 	 */
 	function query( $query, $db = null ) {
-	
+
 		$key = md5( serialize( $query ) . $this->get_db( $db )->name );
 		
 		if ( $cache = $this->cache_get( $key ) ) {
@@ -352,9 +352,9 @@ class DB_API {
 				if ( !$this->verify_column( $query['column'], $query['table'] ) ) {
 					$query['column'] = null;
 				}
+		  }
 
-				$sql = 'SELECT * FROM ' . $query['table'];
-			}
+		  $sql = 'SELECT * FROM ' . $query['table'];
 
 			if ( $query['value'] && $query['column'] == null ) {
 				$query['column'] = $this->get_first_column( $query['table'] );
@@ -441,21 +441,106 @@ class DB_API {
 
 	/**
 	 * Output data as an HTML table.
-	 * @todo Actually make it.
 	 */
 	function render_html( $data ) {
 
-		var_dump( $data );
+  	//err out if no results
+		if ( empty( $data ) ) {
+		  echo "No results found";
+		  return;
+		}
+		
+		//render table headings
+		echo "<table>\n<thead>\n<tr>\n";
+
+		foreach ( array_keys( get_object_vars( reset( $data ) ) ) as $heading ) {
+  		echo "\t<th>$heading</th>\n";
+		}
+		
+		echo "</tr>\n</thead>\n";
+		
+		//loop data and render
+		foreach ( $data as $row ) {
+  		
+  		echo "<tr>\n";
+  		
+  		foreach ( $row as $cell ) {
+    		
+    		echo "\t<td>$cell</td>\n";
+    		
+  		}
+  		
+  		echo "</tr>";
+  		
+		}
+		
+		echo "</table>";
+		
+		
 	}
 
 	/**
 	 * Output data as XML.
-	 * @todo Actually make it.
 	 */
 	function render_xml( $data ) {
 
-		echo "XML HERE";
+		header ("Content-Type:text/xml");  
+		$xml = new SimpleXMLElement( '<results></results>' );
+		$xml = $this->object_to_xml( $data, $xml );
+		echo $this->tidy_xml( $xml );
+		
+	}
 
+	/**
+	 * Recusively travserses through an array to propegate SimpleXML objects
+	 * @param array $array the array to parse
+	 * @param object $xml the Simple XML object (must be at least a single empty node)
+	 * @return object the Simple XML object (with array objects added)
+	 */
+	function object_to_xml( $array, $xml ) {
+	
+		//array of keys that will be treated as attributes, not children
+		$attributes = array( 'id' );
+	
+		//recursively loop through each item
+		foreach ( $array as $key => $value ) {
+	
+			//if this is a numbered array,
+			//grab the parent node to determine the node name
+			if ( is_numeric( $key ) )
+				$key = 'result';
+	
+			//if this is an attribute, treat as an attribute
+			if ( in_array( $key, $attributes ) ) {
+				$xml->addAttribute( $key, $value );
+	
+				//if this value is an object or array, add a child node and treat recursively
+			} else if ( is_object( $value ) || is_array( $value ) ) {
+					$child = $xml->addChild(  $key );
+					$child = $this->object_to_xml( $value, $child );
+	
+					//simple key/value child pair
+				} else {
+				$xml->addChild( $key, $value );
+			}
+	
+		}
+	
+		return $xml;
+	
+	}
+	
+	/**
+	 * Clean up XML domdocument formatting and return as string
+	 */
+	function tidy_xml( $xml ) {
+  	
+	   $dom = new DOMDocument();
+	   $dom->preserveWhiteSpace = false;
+	   $dom->formatOutput = true;
+	   $dom->loadXML( $xml->asXML() );
+	   return $dom->saveXML();
+  	
 	}
 
 	/**
