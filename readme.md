@@ -77,7 +77,9 @@ register_db_api( 'dataset-name', $args );
 
 ```
 
-* Note: All fields (other than the dataset name) are optional and will default to the above.*
+*Note: All fields (other than the dataset name) are optional and will default to the above.*
+
+For a SQLite database, simply provide the path to the database in `name`.
 
 License
 -------
