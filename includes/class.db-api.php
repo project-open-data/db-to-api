@@ -151,6 +151,7 @@ class DB_API {
 			'value' => null,
 			'limit' => null,
 			'format' => 'json',
+			'callback' =>  null,
 		);
 
 		$parts = shortcode_atts( $defaults, $parts );
@@ -432,10 +433,36 @@ class DB_API {
 	 * Output JSON encoded data.
 	 * @todo Support JSONP, with callback filtering.
 	 */
-	function render_json( $data ) {
+	function render_json( $data, $query ) {
 
 		header('Content-type: application/json');
-		echo json_encode( $data );
+		$output = json_encode( $data );
+		
+		// Prepare a JSONP callback.
+		$callback = $this->jsonp_callback_filter( $query['callback'] );
+
+		// Only send back JSONP if that's appropriate for the request.
+		if ( $callback ) {
+			echo "{$callback}($output);";
+			return;
+		}
+
+		// If not JSONP, send back the data.
+		echo $output;
+
+	}
+	
+	/**
+	 * Prevent malicious callbacks from being used in JSONP requests.
+	 */
+	function jsonp_callback_filter( $callback ) {
+
+		// As per <http://stackoverflow.com/a/10900911/1082542>.
+		if ( preg_match( '/[^0-9a-zA-Z\$_]|^(abstract|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|volatile|void|while|with|NaN|Infinity|undefined)$/', $callback) ) {
+			return false;
+		}
+
+		return $callback;
 
 	}
 

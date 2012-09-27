@@ -9,4 +9,4 @@ $db_api->set_db( $query['db'] );
 $results = $db_api->query( $query );
 
 $renderer = 'render_' . $query['format'];
-$db_api->$renderer( $results );
+$db_api->$renderer( $results, $query );
