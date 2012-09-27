@@ -471,14 +471,19 @@ class DB_API {
 	 */
 	function render_html( $data ) {
 
+  	require_once( dirname( __FILE__ ) . '/bootstrap/header.html' );
+
   	//err out if no results
 		if ( empty( $data ) ) {
 		  echo "No results found";
 		  return;
 		}
 		
+		//page title
+		echo "<h1>Results</h1>";
+		
 		//render table headings
-		echo "<table>\n<thead>\n<tr>\n";
+		echo "<table class='table table-striped'>\n<thead>\n<tr>\n";
 
 		foreach ( array_keys( get_object_vars( reset( $data ) ) ) as $heading ) {
   		echo "\t<th>$heading</th>\n";
@@ -503,6 +508,7 @@ class DB_API {
 		
 		echo "</table>";
 		
+  	require_once( dirname( __FILE__ ) . '/bootstrap/footer.html' );		
 		
 	}
 
