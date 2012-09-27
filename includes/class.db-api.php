@@ -185,7 +185,7 @@ class DB_API {
 	 * Establish a database connection
 	 * @param string $db the database slug
 	 * @return object the PDO object
-	 * @todo abastract the connection string to support other database types
+	 * @todo support port #s and test on each database
 	 */
 	function &connect( $db ) {
 		
