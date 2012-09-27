@@ -7,7 +7,7 @@ Databases supported (in theory)
 -------------------------------
 
 * MySQL
-* Oracle
+* <del>Oracle</del>
 * ODBC and DB2
 * PostgreSQL
 * SQLite
