@@ -197,7 +197,34 @@ class DB_API {
 		$db = $this->get_db( $db );
 
 		try {
-			$dbh = new PDO("mysql:host={$db->server};dbname={$db->name}", $db->username, $db->password );
+			if ($db->type == 'mysql') {
+				$dbh = new PDO( "mysql:host={$db->server};dbname={$db->name}", $db->username, $db->password );
+			}
+			elseif ($db->type == 'pgsql') {
+				$dbh = new PDO( "pgsql:host={$db->server};dbname={$db->name}", $db->username, $db->password );
+			}
+			elseif ($db->type == 'mssql') {
+				$dbh = new PDO( "sqlsrv:Server={$db->server};Database={$db->name}", $db->username, $db->password );
+			}
+			elseif ($db->type == 'sqlite') {
+				$dbh = new PDO( "sqlite:/{$db->name}" );
+			}
+			elseif ($db->type == 'ibm') {
+				// May require a specified port number as per http://php.net/manual/en/ref.pdo-ibm.connection.php.
+				$dbh = new PDO( "ibm:DRIVER={IBM DB2 ODBC DRIVER};DATABASE={$db->name};HOSTNAME={$db->server};PROTOCOL=TCPIP;", $db->username, $db->password );
+			}
+			elseif ( ($db->type == 'firebird') || ($db->type == 'interbase') ){
+				$dbh = new PDO( "firebird:dbname={$db->name};host={$db->server}" );
+			}
+			elseif ($db->type == '4D') {
+				$dbh = new PDO( "4D:host={$db->server}", $db->username, $db->password );
+			}
+			elseif ($db->type == 'informix') {
+				$dbh = new PDO( "informix:host={$db->server}; database={$db->name}; server={$db->server}", $db->username, $db->password );
+			}
+			else {
+				$this->error('Unknown database type.');
+			}
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch(PDOException $e) {
 			echo $e->getMessage();
