@@ -59,15 +59,18 @@ class DB_API {
 	 */
 	function get_db( $db = null ) {
 
-		if ( $db == null && $this->db != null )
+		if ( $db == null && $this->db != null ) {
 			return $this->db;
+		}
 
-		if ( is_object( $db ) )
+		if ( is_object( $db ) ) {
 			var_dump( debug_backtrace() );//$db = $db->name;
+		}
 		
 		
-		if ( !array_key_exists( $db, $this->dbs ) )
+		if ( !array_key_exists( $db, $this->dbs ) ) {
 			$this->error( 'Invalid Database' );
+		}
 
 		return $this->dbs[$db];
 
@@ -82,8 +85,9 @@ class DB_API {
 
 		$db = $this->get_db( $db );
 
-		if ( !$db )
+		if ( !$db ) {
 			return false;
+		}
 		
 		$this->db = $db;
 
@@ -93,7 +97,7 @@ class DB_API {
 
 
 	/**
-	 * Modifies a string to remove al non ASCII characters and spaces.
+	 * Modifies a string to remove all non-ASCII characters and spaces.
 	 * http://snipplr.com/view.php?codeview&id=22741
 	 */
 	function slugify( $text ) {
@@ -132,8 +136,9 @@ class DB_API {
 	 */
 	function parse_query( $query = null ) {
 
-		if ( $query == null )
+		if ( $query == null ) {
 			$query = $_SERVER['QUERY_STRING'];
+		}
 
 		parse_str( $query, $parts );
 
@@ -150,22 +155,27 @@ class DB_API {
 
 		$parts = shortcode_atts( $defaults, $parts );
 
-		if ( $parts['db'] == null )
+		if ( $parts['db'] == null ) {
 			$this->error( 'Must select a database' );
+		}
 
-		if ( $parts['table'] == null )
+		if ( $parts['table'] == null ) {
 			$this->error( 'Must select a table' );
+		}
 
 		$db = $this->get_db( $parts['db'] );
 
-		if ( in_array( $parts['table'], $db->table_blacklist ) )
+		if ( in_array( $parts['table'], $db->table_blacklist ) ) {
 			$this->error( 'Invalid table' );
+		}
 
-		if ( !in_array( $parts['direction'], array( 'ASC', 'DESC' ) ) )
+		if ( !in_array( $parts['direction'], array( 'ASC', 'DESC' ) ) ) {
 			$parts['direction'] = null;
+		}
 
-		if ( !in_array( $parts['format'], array( 'html', 'xml', 'json' ) ) )
+		if ( !in_array( $parts['format'], array( 'html', 'xml', 'json' ) ) ) {
 			$parts['format'] = null;
+		}
 
 		return $parts;
 
@@ -180,8 +190,9 @@ class DB_API {
 	function &connect( $db ) {
 		
 		//check for existing connection
-		if ( isset( $this->connections[$db] ) )
+		if ( isset( $this->connections[$db] ) ) {
 			return $this->connections[$db];
+		}
 			
 		$db = $this->get_db( $db );
 
@@ -219,8 +230,9 @@ class DB_API {
 			}
 			
 			$tables = array();
-			while ( $table = $stmt->fetch() )
+			while ( $table = $stmt->fetch() ) {
 				$tables[] = $table[0];
+			}
 		
 		}
 		
@@ -236,13 +248,15 @@ class DB_API {
 	 */
 	function get_columns( $table, $db = null ) {
 
-		if ( !$this->verify_table( $table ) )
+		if ( !$this->verify_table( $table ) ) {
 			return false;
+		}
 			
 		$key = $this->get_db( $db )->name . '.' . $table . '_columns';
 		
-		if ( $cache = $this->cache_get( $key ) )
+		if ( $cache = $this->cache_get( $key ) ) {
 			return $cache;
+		}
 			
 		$dbh = &$this->connect( $db );
 		
@@ -293,41 +307,49 @@ class DB_API {
 	
 		$key = md5( serialize( $query ) . $this->get_db( $db )->name );
 		
-		if ( $cache = $this->cache_get( $key ) )
+		if ( $cache = $this->cache_get( $key ) ) {
 			return $cache;
+		}
 
 		try {
 
 			$dbh = &$this->connect( $db );
 
 			//santize table name
-			if ( !$this->verify_table( $query['table'] ) )
+			if ( !$this->verify_table( $query['table'] ) ) {
 				$this->error( 'Invalid Table' );
+			}
 
 			//santize column name
-			if ( $query['column'] )
-				if ( !$this->verify_column( $query['column'], $query['table'] ) )
+			if ( $query['column'] ) {
+				if ( !$this->verify_column( $query['column'], $query['table'] ) ) {
 					$query['column'] = null;
+				}
 
 				$sql = 'SELECT * FROM ' . $query['table'];
+			}
 
-			if ( $query['value'] && $query['column'] == null )
+			if ( $query['value'] && $query['column'] == null ) {
 				$query['column'] = $this->get_first_column( $query['table'] );
+			}
 
-			if ( $query['value'] && $query['column'] )
+			if ( $query['value'] && $query['column'] ) {
 				$sql .= " WHERE `{$query['table']}`.`{$query['column']}` = :value";
+			}
 
 			if ( $query['order_by'] && $query['direction'] ) {
 
-				if ( !$this->verify_column( $query['order_by'], $query['table'] ) )
+				if ( !$this->verify_column( $query['order_by'], $query['table'] ) ) {
 					return false;
+				}
 
 				$sql .= " ORDER BY `{$query['table']}`.`{$query['order_by']}` {$query['direction']}";
 
 			}
 
-			if ( $query['limit'] )
+			if ( $query['limit'] ) {
 				$sql .= " LIMIT " . (int) $query['limit'];
+			}
 
 			$sth = $dbh->prepare( $sql );
 			$sth->bindParam( ':value', $query['value'] );
@@ -351,13 +373,15 @@ class DB_API {
 
 		$db = $this->get_db( $db );
 
-		if ( empty( $db->column_blacklist ) )
+		if ( empty( $db->column_blacklist ) ) {
 			return $results;
+		}
 
 		foreach ( $results as $ID => $result ) {
 
-			foreach ( $db->column_blacklist as $column )
+			foreach ( $db->column_blacklist as $column ) {
 				unset( $results[ $ID ][ $column] );
+			}
 
 		}
 
@@ -397,11 +421,13 @@ class DB_API {
 
 	function cache_get( $key ) {
 
-		if ( function_exists( 'apc_fetch' ) )
+		if ( function_exists( 'apc_fetch' ) ) {
 			return apc_fetch( $key );
+		}
 
-		if ( isset( $this->cache[ $key ] ) )
+		if ( isset( $this->cache[ $key ] ) ) {
 			return $this->cache[ $key ];
+		}
 
 		return false;
 
@@ -410,13 +436,15 @@ class DB_API {
 
 	function cache_set( $key, $value, $tll = null ) {
 
-		if ( $ttl == null )
+		if ( $ttl == null ) {
 			$ttl = ( isset( $this->db->ttl) ) ? $this->db->ttl : $this->ttl;
+		}
 
 		$key = 'db_api_' . $key;
 
-		if ( function_exists( 'apc_store' ) )
+		if ( function_exists( 'apc_store' ) ) {
 			return apc_store( $key, $value, $ttl );
+		}
 
 		$this->cache[$key] = $value;
 
