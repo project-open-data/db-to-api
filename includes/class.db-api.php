@@ -189,7 +189,7 @@ class DB_API {
 	 */
 	function &connect( $db ) {
 		
-		//check for existing connection
+		// check for existing connection
 		if ( isset( $this->connections[$db] ) ) {
 			return $this->connections[$db];
 		}
