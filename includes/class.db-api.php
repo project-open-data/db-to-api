@@ -342,12 +342,12 @@ class DB_API {
 
 			$dbh = &$this->connect( $db );
 
-			//santize table name
+			// sanitize table name
 			if ( !$this->verify_table( $query['table'] ) ) {
 				$this->error( 'Invalid Table' );
 			}
 
-			//santize column name
+			// santize column name
 			if ( $query['column'] ) {
 				if ( !$this->verify_column( $query['column'], $query['table'] ) ) {
 					$query['column'] = null;
