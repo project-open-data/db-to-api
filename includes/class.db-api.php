@@ -203,7 +203,7 @@ class DB_API {
 			echo $e->getMessage();
 		}
 
-		//cache
+		// cache
 		$this->connections[$db] = &$dbh;
 		
 		return $dbh;
