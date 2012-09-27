@@ -210,6 +210,9 @@ class DB_API {
 			elseif ($db->type == 'sqlite') {
 				$dbh = new PDO( "sqlite:/{$db->name}" );
 			}
+			elseif ($db->type == 'oracle') {
+				$dbh = new PDO( "oci:dbname={$db->name}" );
+			}
 			elseif ($db->type == 'ibm') {
 				// May require a specified port number as per http://php.net/manual/en/ref.pdo-ibm.connection.php.
 				$dbh = new PDO( "ibm:DRIVER={IBM DB2 ODBC DRIVER};DATABASE={$db->name};HOSTNAME={$db->server};PROTOCOL=TCPIP;", $db->username, $db->password );
