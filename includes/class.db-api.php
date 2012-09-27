@@ -395,7 +395,9 @@ class DB_API {
 
 	}
 
-
+	/**
+	 * Remove any blacklisted columns from the data set.
+	 */
 	function sanitize_results( $results, $db = null ) {
 
 		$db = $this->get_db( $db );
@@ -416,7 +418,9 @@ class DB_API {
 
 	}
 
-
+	/**
+	 * Halt the program with an "Internal server error" and the specified message.
+	 */
 	function error( $error, $code = '500' ) {
 		http_response_code( $code );
 		die( $error );
@@ -424,7 +428,10 @@ class DB_API {
 
 	}
 
-
+	/**
+	 * Output JSON encoded data.
+	 * @todo Support JSONP, with callback filtering.
+	 */
 	function render_json( $data ) {
 
 		header('Content-type: application/json');
@@ -432,20 +439,28 @@ class DB_API {
 
 	}
 
-
+	/**
+	 * Output data as an HTML table.
+	 * @todo Actually make it.
+	 */
 	function render_html( $data ) {
 
 		var_dump( $data );
 	}
 
-
+	/**
+	 * Output data as XML.
+	 * @todo Actually make it.
+	 */
 	function render_xml( $data ) {
 
 		echo "XML HERE";
 
 	}
 
-
+	/**
+	 * Retrieve data from Alternative PHP Cache (APC).
+	 */
 	function cache_get( $key ) {
 
 		if ( function_exists( 'apc_fetch' ) ) {
@@ -460,7 +475,9 @@ class DB_API {
 
 	}
 
-
+	/**
+	 * Store data in Alternative PHP Cache (APC).
+	 */
 	function cache_set( $key, $value, $tll = null ) {
 
 		if ( $ttl == null ) {
