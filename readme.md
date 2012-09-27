@@ -90,6 +90,3 @@ Roadmap
 -------
 
 * Automagic documentation generation
-* JSONP
-* XML and HTML output
-* Support more PDO database drivers
