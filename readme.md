@@ -3,20 +3,21 @@ Database to API
 
 Dynamically generate RESTful APIs from the contents of a database table. Provides JSON, XML, and HTML. Supports most popular databases.
 
-Databases supported (in theory)
--------------------------------
 
-* MySQL
-* Oracle
-* ODBC and DB2
-* PostgreSQL
-* SQLite
-* MS SQL Server
-* IBM
+Databases Supported
+-------------------
+
+* 4D
 * CUBRID
 * Firebird/Interbase
+* IBM
 * Informix
-* 4D
+* MS SQL Server
+* MySQL
+* ODBC and DB2
+* Oracle
+* PostgreSQL
+* SQLite
 
 Output Formats
 --------------
