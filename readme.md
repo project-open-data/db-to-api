@@ -45,7 +45,7 @@ Additional Parameters
 * `direction`: direction to sort, either `asc` or `desc` (default `asc`)
 * `limit`: number, maximum number of results to return
 
-e.g., `/[table]/[column]/[value].[format]?order_by=[column]&direction=[direction]`
+e.g., `/[database]/[table]/[column]/[value].[format]?order_by=[column]&direction=[direction]`
 
 Requirements
 ------------
