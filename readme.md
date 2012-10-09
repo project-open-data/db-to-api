@@ -65,7 +65,7 @@ Usage
 How to Register a Dataset
 -------------------------
 
-Edit `config.php` to include the following for each dataset:
+Edit `config.php` to include a a single instance of the following for each dataset (including as many instances as you have datasets):
 
 ```php
 
