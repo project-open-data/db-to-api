@@ -55,8 +55,8 @@ Requirements
 * PHP Data Objects (PDO) Extension
 * APC (optional)
 
-Setting up
-----------
+Usage
+-----
 
 1. Copy `config.sample.php` to `config.php`
 2. Follow the in-line example to register a new dataset. Tip: It's best to provide read-only database credentials here.
