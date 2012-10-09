@@ -1,4 +1,4 @@
-Database to RESTful API
+Database to API
 =======================
 
 Given database credentials, creates an interactive, RESTful API
