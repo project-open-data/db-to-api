@@ -31,13 +31,6 @@ Databases Supported
 * PostgreSQL
 * SQLite
 
-Output Formats
---------------
-
-* JSON
-* XML
-* HTML
-
 API Structure
 -------------
 
