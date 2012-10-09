@@ -1,7 +1,7 @@
 Database to API
 =======================
 
-Given database credentials, creates an interactive, RESTful API
+Dynamically generate RESTful APIs from the contents of a database table. Provides JSON, XML, and HTML. Supports most popular databases.
 
 Databases supported (in theory)
 -------------------------------
