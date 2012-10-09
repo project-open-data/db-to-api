@@ -51,8 +51,9 @@ Requirements
 ------------
 
 * PHP
-* MySQL Database (for now)
-* PDO Extension
+* Database
+* PHP Data Objects (PDO) Extension
+* APC (optional)
 
 Setting up
 ----------
