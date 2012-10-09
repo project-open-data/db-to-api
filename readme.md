@@ -93,7 +93,7 @@ For an Oracle database, you can either specify a service defined in tsnames.ora 
 License
 -------
 
-GPLv3 or Later
+GPLv3 or later.
 
 Roadmap
 -------
