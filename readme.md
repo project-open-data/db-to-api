@@ -34,9 +34,9 @@ Databases Supported
 API Structure
 -------------
 
-* All rows in a table - `[database]/[table]/.[format]`
-* Specific row in a table `[database]/[table]/[ID].[format]`
-* All rows matching a query `[database]/[table]/[column]/[value].[format]`
+* all rows in a table: `/[database]/[table]/.[format]`
+* specific row in a table: `/[database]/[table]/[ID].[format]`
+* all rows matching a query: `/[database]/[table]/[column]/[value].[format]`
 
 Additional Parameters
 ---------------------
