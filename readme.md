@@ -3,6 +3,18 @@ Database to API
 
 Dynamically generate RESTful APIs from the contents of a database table. Provides JSON, XML, and HTML. Supports most popular databases.
 
+What Problem This Solves
+------------------------
+
+Creating an API to access information within existing database tables is laborious task, when done as a bespoke task. This is often dealt with by exporting the contents of the database as CSV files, and providing downloads of them as a “good enough” solution.
+
+How This Solves It
+------------------
+
+Database to API acts as a filter, sitting between a database and the browser, allowing users to interact with that database as if it was a native API. The column names function as the key names. This obviates the need for custom code for each database layer.
+
+When Alternative PHP Cache (APC) is installed, parsed data is stored within APC, which accellerates substantially its functionality.
+
 
 Databases Supported
 -------------------
