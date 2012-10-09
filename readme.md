@@ -41,9 +41,9 @@ API Structure
 Additional Parameters
 ---------------------
 
-* `order_by` - name of column to sort by
-* `direction` - either `ASC` or `DESC`, sort direction
-* `limit` - number, maximum number of results to return
+* `order_by`: name of column to sort by
+* `direction`: direction to sort, either `asc` or `desc` (default `asc`)
+* `limit`: number, maximum number of results to return
 
 e.g., `/[table]/[column]/[value].[format]?order_by=[column]&direction=[direction]`
 
