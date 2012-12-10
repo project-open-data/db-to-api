@@ -69,7 +69,7 @@ class DB_API {
 		
 		
 		if ( !array_key_exists( $db, $this->dbs ) ) {
-			$this->error( 'Invalid Database' );
+			$this->error( 'Invalid Database', 404 );
 		}
 
 		return $this->dbs[$db];
@@ -157,17 +157,17 @@ class DB_API {
 		$parts = shortcode_atts( $defaults, $parts );
 
 		if ( $parts['db'] == null ) {
-			$this->error( 'Must select a database' );
+			$this->error( 'Must select a database', 400 );
 		}
 
 		if ( $parts['table'] == null ) {
-			$this->error( 'Must select a table' );
+			$this->error( 'Must select a table', 400 );
 		}
 
 		$db = $this->get_db( $parts['db'] );
 
 		if ( in_array( $parts['table'], $db->table_blacklist ) ) {
-			$this->error( 'Invalid table' );
+			$this->error( 'Invalid table', 404 );
 		}
 
 		if ( !in_array( $parts['direction'], array( 'ASC', 'DESC' ) ) ) {
@@ -231,7 +231,7 @@ class DB_API {
 			}
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch(PDOException $e) {
-			echo $e->getMessage();
+			$this->error( $e );
 		}
 
 		// cache
@@ -257,7 +257,7 @@ class DB_API {
 			try { 
 				$stmt = $dbh->query( 'SHOW TABLES' );
 			} catch( PDOException $e ) {
-				echo $e->getMessage();
+				$this->error( $e );
 			}
 			
 			$tables = array();
@@ -296,7 +296,7 @@ class DB_API {
 			$q->execute();
 			$columns = $q->fetchAll(PDO::FETCH_COLUMN);
 		} catch( PDOException $e ) {
-			echo $e->getMessage();
+			$this->error( $e );
 		}
 		
 		$this->cache_set( $key, $columns, $db->ttl );
@@ -348,7 +348,7 @@ class DB_API {
 
 			// sanitize table name
 			if ( !$this->verify_table( $query['table'] ) ) {
-				$this->error( 'Invalid Table' );
+				$this->error( 'Invalid Table', 404 );
 			}
 
 			// santize column name
@@ -390,7 +390,7 @@ class DB_API {
 			$results = $this->sanitize_results( $results );
 
 		} catch( PDOException $e ) {
-			echo $e->getMessage();
+			$this->error( $e );
 		}
 		
 		$this->cache_set( $key, $results, $db->ttl );
@@ -424,8 +424,15 @@ class DB_API {
 
 	/**
 	 * Halt the program with an "Internal server error" and the specified message.
+	 * @param string|obj $error the error or a (PDO) exception object
+	 * @param int $code (optional) the error code with which to respond
 	 */
 	function error( $error, $code = '500' ) {
+	  
+	  if ( is_object( $error ) && method_exists( $error, 'get_message' ) ) {
+	    $error = $error->get_message();
+	  }
+	
 		http_response_code( $code );
 		die( $error );
 		return false;
@@ -478,7 +485,7 @@ class DB_API {
 
   	//err out if no results
 		if ( empty( $data ) ) {
-		  echo "No results found";
+		  $this->error( 'No results found', 404 );
 		  return;
 		}
 		
