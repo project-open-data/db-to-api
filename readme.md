@@ -70,8 +70,8 @@ Edit `config.php` to include a a single instance of the following for each datas
 ```php
 
 $args = array( 
-			'name' => database_name,
-		    'username' => 'username',
+			'name' => 'database_name',
+			'username' => 'username',
 			'password' => 'password',
 			'server' => 'localhost',
 			'port' => 3306,
@@ -92,7 +92,7 @@ Here is a `config.php` file for a MySQL database named “inspections,” access
 
 $args = array( 
 			'name' => 'inspections',
-		    'username' => 'website',
+			'username' => 'website',
 			'password' => 's3cr3tpa55w0rd',
 			'server' => 'localhost',
 			'port' => 3306,
