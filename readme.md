@@ -105,6 +105,8 @@ register_db_api( 'facility-inspections', $args );
 
 ```
 
+Retrieving the contents of the table `history` within this dataset as JSON would be accomplished with a request for `/facility-inspections/history.json`. Note that it is the name of the dataset (`facility-inspections`) and not the name of the database (`inspections`) that is specified in the URL.
+
 For a SQLite database, simply provide the path to the database in `name`.
 
 For an Oracle database, you can either specify a service defined in tsnames.ora (e.g. `dept_spending`) or you can define an Oracle Instant Client connection string (e.g., `//localhost:1521/dept_spending`).
