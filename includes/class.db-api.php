@@ -411,9 +411,8 @@ class DB_API {
 		}
 
 		foreach ( $results as $ID => $result ) {
-
 			foreach ( $db->column_blacklist as $column ) {
-				unset( $results[ $ID ][ $column] );
+				unset( $results[ $ID ] -> $column );
 			}
 
 		}
