@@ -235,7 +235,7 @@ class DB_API {
 		}
 
 		// cache
-		$this->connections[$db] = &$dbh;
+		$this->connections[$db->type] = &$dbh;
 		
 		return $dbh;
 
@@ -299,7 +299,7 @@ class DB_API {
 			$this->error( $e );
 		}
 		
-		$this->cache_set( $key, $columns, $db->ttl );
+		$this->cache_set( $key, $columns, $this->get_db( $db )->ttl );
 		return $columns;
 	}
 
@@ -393,7 +393,7 @@ class DB_API {
 			$this->error( $e );
 		}
 		
-		$this->cache_set( $key, $results, $db->ttl );
+		$this->cache_set( $key, $results, $this->get_db( $db )->ttl );
 		
 		return $results;
 
@@ -606,7 +606,7 @@ class DB_API {
 	/**
 	 * Store data in Alternative PHP Cache (APC).
 	 */
-	function cache_set( $key, $value, $tll = null ) {
+	function cache_set( $key, $value, $ttl = null ) {
 
 		if ( $ttl == null ) {
 			$ttl = ( isset( $this->db->ttl) ) ? $this->db->ttl : $this->ttl;
